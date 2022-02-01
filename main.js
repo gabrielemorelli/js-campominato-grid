@@ -1,71 +1,72 @@
-creategrid(100, 'facile')
 
+/*abbilito l'evento listener sul click del bottone play e attivo la funzione gioca*/
 
-const bottone = document.getElementById('play');
+document.getElementById('play').addEventListener('click', gioca);
 
-const sb = document.querySelector('#difficolta');
+/*funzione gioca*/
+function gioca() {
 
+    const sb = document.querySelector('#difficolta');
+    const grid = document.getElementById('grid');
+    grid.innerHTML = "";
+    let numerocelle = 100;
+   
+    /*verifico il numero delle celle dentro la griglia in base al livello di difficoltà*/
+    if (sb.value == 'facile') {
+        numerocelle = 100;
 
-bottone.addEventListener('click',
-    function () {
-        removegrid();
-        if (sb.value == 'facile') {
+    } else if (sb.value == 'media') {
+        numerocelle = 81;
 
-            creategrid(100, sb.value);
+    } else {
+        numerocelle = 49;
 
-        } else if (sb.value == 'media') {
+    }
 
-            creategrid(81, sb.value);
+    /*creo la griglia*/
 
-        } else {
+    creategrid(numerocelle, sb.value);
+  
 
-            creategrid(49, sb.value);
+/*funzione creazione della griglia*/
+    function creategrid(maxvalue, diffic) {
+
+        const gridElement = document.getElementById('grid');
+
+        const createGridElement = () => {
+            const node = document.createElement('div');
+            node.classList.add('square', diffic);
+
+            return node;
         }
-    })
 
+/*creazione della griglia e aggiuanta  del listener del click sulla cella*/        
+        for (let i = 1; i <= maxvalue; i++) {
 
+            const node = createGridElement();
 
-function creategrid(maxvalue, diffic) {
+            node.addEventListener('click', handleCell);
 
+            node.innerText = i;
+            gridElement.appendChild(node);
 
-    const gridElement = document.getElementById('grid');
-
-    const createGridElement = () => {
-        const node = document.createElement('div');
-        node.classList.add('square', diffic);
-
-        return node;
+        }
+        return true;
     }
 
-    for (let i = 1; i <= maxvalue; i++) {
+/*operazioni sulla cella dopo il click*/
+    function handleCell() {
 
-        const node = createGridElement();
+        this.classList.add('clicked');
+        this.removeEventListener('click', handleCell);
+        const cell = parseInt(this.innerText);
 
-        node.addEventListener('click', function () {
-            console.log(this);
-            this.classList.add('clicked');
-        });
-        let numb= document.createTextNode (i);
-        gridElement.appendChild(node);
-        node.appendChild(numb);
-       
 
     }
-}
-function removegrid() {
-    var qs = document.querySelectorAll(".square");
-    let j = 0
-    while (j < qs.length) {
 
-        qs[j].remove();
-        j++;
 
-    }
+
+
 
 }
-
-
-
-
-
 
